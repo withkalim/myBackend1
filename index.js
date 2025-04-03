@@ -1,6 +1,5 @@
 import express from "express";
-import { Login, Register } from "./controllers/auth.controller.js";
-import { productCreate } from "./controllers/products.controller.js";
+import Allrouter from "./routes/index.js";
 const forExpress = express();
 
 forExpress.use(express.json());
@@ -18,10 +17,7 @@ forExpress.get("/products", (req, res) => {
   res.send("all products");
 });
 
-// express with post method
-forExpress.post("/register", Register);
-forExpress.post("/login", Login);
-forExpress.post("/product-created", productCreate);
+forExpress.use("/api/v1", Allrouter);
 
 forExpress.listen(8000, () =>
   console.log("Server is running on port number 8000")
