@@ -1,8 +1,11 @@
 import express from "express";
 import Allrouter from "./routes/index.js";
+import morgan from "morgan";
+
 const forExpress = express();
 
 forExpress.use(express.json());
+forExpress.use(morgan("combined"));
 
 forExpress.get("/", (req, res) => {
   res.send("Welcome to backend");

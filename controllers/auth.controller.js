@@ -4,15 +4,15 @@ export const Register = (req, res) =>{
         console.log(name, email, password, conformPassword);
         
         if (!name || !email || !password || !conformPassword) {
-          return res.send("All field medotery");
+          return res.send("All field mandatory");
         }
         if (password !== conformPassword) {
-          return res.send("Please enter right password");
+          return res.send("Please enter correct password");
         }
         return res.send("Horrey Register Successfull");
       } catch (error) {
         console.error(error);
-        res.status(500).send("Server Error");
+        res.send("Server Error");
       }
 }
 

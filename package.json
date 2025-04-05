@@ -1,10 +1,29 @@
 {
   "dependencies": {
     "express": "^4.21.2",
-    "nodemon": "^3.1.9"
+    "morgan": "^1.10.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon server.js"
   },
-  "type": "module"
+  "type": "module",
+  "name": "mybackend1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/withkalim/myBackend1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/withkalim/myBackend1/issues"
+  },
+  "homepage": "https://github.com/withkalim/myBackend1#readme"
 }
