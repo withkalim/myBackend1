@@ -3,12 +3,14 @@ import Allrouter from "./routes/index.js";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 
 const forExpress = express();
 
 forExpress.use(express.json());
 forExpress.use(morgan("combined"));
 dotenv.config();
+forExpress.use(cors());
 
 forExpress.get("/", (req, res) => {
   res.send("Welcome to backend");
