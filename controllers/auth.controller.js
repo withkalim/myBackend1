@@ -28,7 +28,8 @@ export const Register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     console.log(password, "password", hashPassword, "New Hashpassword");
-    // mongoDB save data
+
+    // save data to mongoDB
     const newUser = User({
       name: name,
       email: email,
@@ -45,6 +46,13 @@ export const Register = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+
 // for login
 export const Login = async (req, res) => {
   try {
@@ -60,7 +68,7 @@ export const Login = async (req, res) => {
     return res.json({ success: true, message: "Login successfull" });
 
   } catch (error) {
-    console.error(error);
-    return res.json({ success: false, message: "Server Error" });
+    console.log(error, "Error in register api call");
+    return res.json({ success: false, error: error });
   }
 };

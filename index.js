@@ -27,9 +27,12 @@ forExpress.get("/products", (req, res) => {
 
 forExpress.use("/api/v1", Allrouter);
 
-mongoose.connect(process.env.MONGODBURL).then(() => {
-  console.log("mongoDB Connected");
-});
+mongoose
+  .connect(process.env.MONGODBURL)
+  .then(() => {
+    console.log("mongoDB Connected");
+  })
+  .catch((error) => console.log("MongoDB connection error:", error));
 
 forExpress.listen(8000, () =>
   console.log("Server is running on port number 8000")
