@@ -4,8 +4,19 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
+import {Server} from "soket.io";
 
 const forExpress = express();
+
+const server = http.createServer(forExpress);
+const io = new server(server, {
+  cors:{
+    // origin: "https://awdiz-10-react.vercel.app",
+    origin: "http://localhost:3000",
+    method: ["GET", "POST"],
+  },
+});
+
 
 forExpress.use(express.json());
 forExpress.use(morgan("combined"));
