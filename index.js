@@ -4,17 +4,31 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import {Server} from "soket.io";
+import { Server } from "socket.io";
+import http from "http";
+
 
 const forExpress = express();
 
 const server = http.createServer(forExpress);
-const io = new server(server, {
+const io = new Server(server, {
   cors:{
     // origin: "https://awdiz-10-react.vercel.app",
     origin: "http://localhost:3000",
-    method: ["GET", "POST"],
+    methods: ["GET", "POST"],
   },
+});
+
+io.on("connection", (socket)=>{
+  console.log("socket Server connected", socket.id);
+  socket.on("Send_message", (data)=>{
+    console.log("Message received", data);
+
+    io.emit("receive_message", {data});
+  });
+  socket.on("Disconnect", ()=>{
+    console.log("User Disconnected");
+  })
 });
 
 
@@ -45,6 +59,9 @@ mongoose
   })
   .catch((error) => console.log("MongoDB connection error:", error));
 
-forExpress.listen(8000, () =>
+// forExpress.listen(8000, () =>
+//   console.log("Server is running on port number 8000")
+// );
+server.listen(8000, () =>
   console.log("Server is running on port number 8000")
 );
