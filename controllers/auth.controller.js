@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 export const Register = async (req, res) => {
   try {
-    const { name, email, password, conformPassword } = req.body;
+    const { name, email, password, conformPassword } = req.body.userData;
     console.log(name, email, password, conformPassword);
 
     if (!name || !email || !password || !conformPassword) {
@@ -18,7 +18,7 @@ export const Register = async (req, res) => {
     const isEmailExist = await User.find({ email: email });
     // const isEmailExist = await User.deleteOne({ email: email});
 
-    console.log(isEmailExist, "is email exist");
+    console.log(isEmailExist, "isemailexist");
     if (isEmailExist?.length > 0) {
       return res.json({
         success: false,
@@ -30,7 +30,7 @@ export const Register = async (req, res) => {
     console.log(password, "password", hashPassword, "New Hashpassword");
 
     // save data to mongoDB
-    const newUser = User({
+    const newUser = await User({
       name: name,
       email: email,
       password: hashPassword,

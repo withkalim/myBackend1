@@ -4,32 +4,32 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import { Server } from "socket.io";
-import http from "http";
+// import { Server } from "socket.io";
+// import http from "http";
 
 
 const forExpress = express();
 
-const server = http.createServer(forExpress);
-const io = new Server(server, {
-  cors:{
-    // origin: "https://awdiz-10-react.vercel.app",
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
-});
+// const server = http.createServer(forExpress);
+// const io = new Server(server, {
+//   cors:{
+//     // origin: "https://awdiz-10-react.vercel.app",
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-io.on("connection", (socket)=>{
-  console.log("socket Server connected", socket.id);
-  socket.on("Send_message", (data)=>{
-    console.log("Message received", data);
+// io.on("connection", (socket)=>{
+//   console.log("socket Server connected", socket.id);
+//   socket.on("Send_message", (data)=>{
+//     console.log("Message received", data);
 
-    io.emit("receive_message", {data});
-  });
-  socket.on("Disconnect", ()=>{
-    console.log("User Disconnected");
-  })
-});
+//     io.emit("receive_message", {data});
+//   });
+//   socket.on("Disconnect", ()=>{
+//     console.log("User Disconnected");
+//   })
+// });
 
 
 forExpress.use(express.json());
@@ -62,6 +62,6 @@ mongoose
 // forExpress.listen(8000, () =>
 //   console.log("Server is running on port number 8000")
 // );
-server.listen(8000, () =>
+forExpress.listen(8000, () =>
   console.log("Server is running on port number 8000")
 );
