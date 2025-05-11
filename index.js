@@ -35,7 +35,11 @@ const forExpress = express();
 forExpress.use(express.json());
 forExpress.use(morgan("combined"));
 dotenv.config();
-forExpress.use(cors());
+
+forExpress.use(cors({
+   origin: "http://localhost:3000", // frontend port
+  credentials: true
+}));
 
 forExpress.get("/", (req, res) => {
   res.send("Welcome to backend");

@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 
 export const Register = async (req, res) => {
   try {
+    console.log("Received data: ", req.body);
     const { name, email, password, conformPassword } = req.body.userData;
     console.log(name, email, password, conformPassword);
 
@@ -12,7 +13,7 @@ export const Register = async (req, res) => {
     if (password !== conformPassword) {
       return res.json({
         success: false,
-        message: "Please enter correct password",
+        message: "Password not matched",
       });
     }
     const isEmailExist = await User.find({ email: email });
@@ -41,7 +42,7 @@ export const Register = async (req, res) => {
 
     return res.json({ success: true, message: "Horrey Register Successfull" });
   } catch (error) {
-    console.error(error);
+    console.error("Registration error", error);
     res.json({ success: false, message: "Server Error" });
   }
 };
@@ -54,21 +55,21 @@ export const Register = async (req, res) => {
 
 
 // for login
-export const Login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.json({ success: false, message: "All field are mandatery" });
-    }
-    const isUserExist = await User.findOne({ email, password });
-    console.log(isUserExist, "Check user exist in db");
-    if (!isUserExist) {
-      return res.json({ success: false, message: "Email is wrong" });
-    }
-    return res.json({ success: true, message: "Login successfull" });
+// export const Login = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     if (!email || !password) {
+//       return res.json({ success: false, message: "All field are mandatery" });
+//     }
+//     const isUserExist = await User.findOne({ email, password });
+//     console.log(isUserExist, "Check user exist in db");
+//     if (!isUserExist) {
+//       return res.json({ success: false, message: "Email is wrong" });
+//     }
+//     return res.json({ success: true, message: "Login successfull" });
 
-  } catch (error) {
-    console.log(error, "Error in register api call");
-    return res.json({ success: false, error: error });
-  }
-};
+//   } catch (error) {
+//     console.log(error, "Error in register api call");
+//     return res.json({ success: false, error: error });
+//   }
+// };
