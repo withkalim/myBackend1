@@ -1,25 +1,22 @@
 import User from "../model/user.schema.js";
 import bcrypt from "bcrypt";
 
+
 export const Register = async (req, res) => {
   try {
     console.log("Received data: ", req.body);
-    const { name, email, password, conformPassword } = req.body.userData;
-    console.log(name, email, password, conformPassword);
+    const { name, email, password, confirmPassword } = req.body;
 
-    if (!name || !email || !password || !conformPassword) {
-      return res.json({ success: false, message: "All field mandatory" });
+    if (!name || !email || !password || !confirmPassword) {
+      return res.json({ success: false, message: "All fields are mandatory" });
     }
-    if (password !== conformPassword) {
-      return res.json({
-        success: false,
-        message: "Password not matched",
-      });
-    }
-    const isEmailExist = await User.find({ email: email });
-    // const isEmailExist = await User.deleteOne({ email: email});
 
-    console.log(isEmailExist, "isemailexist");
+    if (password !== confirmPassword) {
+      return res.json({ success: false, message: "Passwords do not match" });
+    }
+
+    const isEmailExist = await User.find({ email });
+
     if (isEmailExist?.length > 0) {
       return res.json({
         success: false,
@@ -28,24 +25,70 @@ export const Register = async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    console.log(password, "password", hashPassword, "New Hashpassword");
 
-    // save data to mongoDB
-    const newUser = await User({
-      name: name,
-      email: email,
+    const newUser = new User({
+      name,
+      email,
       password: hashPassword,
     });
 
-    const responsefromDB = await newUser.save();
-    console.log(newUser, "recent newUSer");
+    await newUser.save();
 
-    return res.json({ success: true, message: "Horrey Register Successfull" });
+    return res.json({ success: true, message: "Hooray! Registration successful" });
   } catch (error) {
     console.error("Registration error", error);
     res.json({ success: false, message: "Server Error" });
   }
 };
+
+
+
+
+// export const Register = async (req, res) => {
+//   try {
+//     console.log("Received data: ", req.body);
+//     const { name, email, password, confirmPassword } = req.body.userData.name;
+//     console.log(name, email, password, confirmPassword);
+
+//     if (!name || !email || !password || !confirmPassword) {
+//       return res.json({ success: false, message: "All field mandatory" });
+//     }
+//     if (password !== confirmPassword) {
+//       return res.json({
+//         success: false,
+//         message: "Password not matched",
+//       });
+//     }
+//     const isEmailExist = await User.find({ email: email });
+//     // const isEmailExist = await User.deleteOne({ email: email});
+
+//     console.log(isEmailExist, "isemailexist");
+//     if (isEmailExist?.length > 0) {
+//       return res.json({
+//         success: false,
+//         message: "Email already taken, please use another one",
+//       });
+//     }
+
+//     const hashPassword = await bcrypt.hash(password, 10);
+//     console.log(password, "password", hashPassword, "New Hashpassword");
+
+//     // save data to mongoDB
+//     const newUser = await User({
+//       name: name,
+//       email: email,
+//       password: hashPassword,
+//     });
+
+//     const responsefromDB = await newUser.save();
+//     console.log(newUser, "recent newUSer");
+
+//     return res.json({ success: true, message: "Horrey Register Successfull" });
+//   } catch (error) {
+//     console.error("Registration error", error);
+//     res.json({ success: false, message: "Server Error" });
+//   }
+// };
 
 
 

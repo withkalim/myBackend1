@@ -36,10 +36,12 @@ forExpress.use(express.json());
 forExpress.use(morgan("combined"));
 dotenv.config();
 
-forExpress.use(cors({
-   origin: "http://localhost:3000", // frontend port
-  credentials: true
-}));
+const corsOptions = {
+  origin: 'http://localhost:3000', // Replace with your frontend's origin
+  optionsSuccessStatus: 200,
+};
+
+forExpress.use(cors(corsOptions));
 
 forExpress.get("/", (req, res) => {
   res.send("Welcome to backend");
@@ -66,6 +68,7 @@ mongoose
 // forExpress.listen(8000, () =>
 //   console.log("Server is running on port number 8000")
 // );
-forExpress.listen(8000, () =>
-  console.log("Server is running on port number 8000")
-);
+const PORT = process.env.PORT || 8000;
+forExpress.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
