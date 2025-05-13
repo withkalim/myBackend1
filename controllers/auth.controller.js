@@ -96,7 +96,7 @@ export const Login = async (req, res) => {
     if (!email || !password) {
       return res.json({ success: false, message: "All field are mandatory" });
     }
-    const isUserExist = await User.findOne({ email});
+    const isUserExist = await User.findOne({ email: email});
     console.log(isUserExist, "Check user exist in db");
     if (!isUserExist) {
       return res.json({ success: false, message: "Email is wrong" });
