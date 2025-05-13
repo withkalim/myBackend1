@@ -1,7 +1,6 @@
 import User from "../model/user.schema.js";
 import bcrypt from "bcrypt";
 
-
 export const Register = async (req, res) => {
   try {
     console.log("Received data: ", req.body);
@@ -34,15 +33,15 @@ export const Register = async (req, res) => {
 
     await newUser.save();
 
-    return res.json({ success: true, message: "Hooray! Registration successful" });
+    return res.json({
+      success: true,
+      message: "Hooray! Registration successful",
+    });
   } catch (error) {
     console.error("Registration error", error);
     res.json({ success: false, message: "Server Error" });
   }
 };
-
-
-
 
 // export const Register = async (req, res) => {
 //   try {
@@ -90,29 +89,36 @@ export const Register = async (req, res) => {
 //   }
 // };
 
-
-
-
-
-
-
-
 // for login
-// export const Login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     if (!email || !password) {
-//       return res.json({ success: false, message: "All field are mandatery" });
-//     }
-//     const isUserExist = await User.findOne({ email, password });
-//     console.log(isUserExist, "Check user exist in db");
-//     if (!isUserExist) {
-//       return res.json({ success: false, message: "Email is wrong" });
-//     }
-//     return res.json({ success: true, message: "Login successfull" });
+export const Login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.json({ success: false, message: "All field are mandatory" });
+    }
+    const isUserExist = await User.findOne({ email});
+    console.log(isUserExist, "Check user exist in db");
+    if (!isUserExist) {
+      return res.json({ success: false, message: "Email is wrong" });
+    }
+    console.log(
+      password,
+      "req.body.password",
+      isUserExist.password,
+      "isUserExist.password"
+    );
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      isUserExist.password
+    );
+    console.log(isPasswordCorrect, "isPasswordCorrect");
+    if (!isPasswordCorrect) {
+      return res.json({ success: false, message: "Password is wrong" });
+    }
 
-//   } catch (error) {
-//     console.log(error, "Error in register api call");
-//     return res.json({ success: false, error: error });
-//   }
-// };
+    return res.json({ success: true, message: "Login successfull" });
+  } catch (error) {
+    console.error(error, "Error in register api call");
+    return res.json({ success: false, error: "Server error" });
+  }
+};

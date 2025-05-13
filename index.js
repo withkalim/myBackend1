@@ -56,7 +56,7 @@ forExpress.get("/products", (req, res) => {
   res.send("all products");
 });
 
-forExpress.use("/api/v1", Allrouter);
+forExpress.use("/api/v1/auth", Allrouter);
 
 mongoose
   .connect(process.env.MONGODBURL)
