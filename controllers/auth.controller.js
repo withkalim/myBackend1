@@ -92,8 +92,6 @@ export const Register = async (req, res) => {
 
 // for login
 
-
-
 // export const Login = async (req, res) => {
 //   try {
 //     const { email, password } = req.body;
@@ -127,7 +125,6 @@ export const Register = async (req, res) => {
 //   }
 // };
 
-
 // export const Login = async (req, res) => {
 //   try {
 //     const { email, password } = req.body;
@@ -157,7 +154,7 @@ export const Register = async (req, res) => {
 //     return res.json({
 //       success: true,
 //       message: "Login successfull.",
-   
+
 //     });
 //   } catch (error) {
 //     console.log(error, "error in register api call.");
@@ -165,30 +162,27 @@ export const Register = async (req, res) => {
 //   }
 // };
 
-
-
-// usman code 
+// usman code
 export const Login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
- 
     const isUserExist = await User.findOne({ email: email });
+    console.log(isUserExist, "user Exist in db");
     if (!isUserExist) {
       return res.json({ success: false, message: "User not found!" });
     }
 
-    const isPasswordCorrect = bcrypt.compare(password, isUserExist.password);
+    const isPasswordCorrect = await bcrypt.compare(password, isUserExist.password);
 
     if (!isPasswordCorrect) {
-      return res.json({ succcess: false, message: "Password is incorrect" });
+      return res.json({ success: false, message: "Password is incorrect" });
     }
-
 
     return res.json({
       success: true,
       message: "Login Successful",
-      userData : {user: {name: isUserExist.name}, token: "abc"},
+      userData: { user: { name: isUserExist.name }, token: "abc" },
     });
   } catch (error) {
     console.log(error);
