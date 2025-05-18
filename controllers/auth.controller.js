@@ -1,6 +1,7 @@
 import { token } from "morgan";
 import User from "../model/user.schema.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const Register = async (req, res) => {
   try {
@@ -173,16 +174,25 @@ export const Login = async (req, res) => {
       return res.json({ success: false, message: "User not found!" });
     }
 
-    const isPasswordCorrect = await bcrypt.compare(password, isUserExist.password);
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      isUserExist.password
+    );
 
     if (!isPasswordCorrect) {
       return res.json({ success: false, message: "Password is incorrect" });
     }
 
+    const jwtToken = jwt.sign(
+      { userId: isUserExist._id },
+      process.env.TOKENSECUREKEY
+    );
+    console.log(jwtToken, "jwtToken");
+
     return res.json({
       success: true,
       message: "Login Successful",
-      userData: { user: { name: isUserExist.name }, token: "abc" },
+      userData: { user: { name: isUserExist.name }, jwtToken: "abc" },
     });
   } catch (error) {
     console.log(error);
