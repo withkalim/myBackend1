@@ -59,7 +59,10 @@ forExpress.get("/products", (req, res) => {
 forExpress.use("/api/v1/", Allrouter);
 
 mongoose
-  .connect(process.env.MONGODBURL)
+  .connect(process.env.MONGODBURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("mongoDB Connected");
   })

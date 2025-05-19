@@ -6,9 +6,9 @@ import jwt from "jsonwebtoken";
 export const Register = async (req, res) => {
   try {
     console.log("Received data: ", req.body);
-    const { name, email, password, confirmPassword } = req.body;
+    const { name, email, password, confirmPassword, role } = req.body;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !role) {
       return res.json({ success: false, message: "All fields are mandatory" });
     }
 
@@ -31,6 +31,7 @@ export const Register = async (req, res) => {
       name,
       email,
       password: hashPassword,
+      role: role,
     });
 
     await newUser.save();
@@ -164,6 +165,7 @@ export const Register = async (req, res) => {
 // };
 
 // usman code
+
 export const Login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -192,7 +194,15 @@ export const Login = async (req, res) => {
     return res.json({
       success: true,
       message: "Login Successful",
-      userData: { user: { name: isUserExist.name }, jwtToken: "abc" },
+      userData: {
+        user: {
+          userId: isUserExist._id,
+          name: isUserExist.name,
+          phone: isUserExist.phone,
+          role: isUserExist.role,
+        },
+        token: jwtToken,
+      },
     });
   } catch (error) {
     console.log(error);
