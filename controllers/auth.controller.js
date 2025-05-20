@@ -28,10 +28,11 @@ export const Register = async (req, res) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
-      name,
-      email,
+      name : name,
+      email : email,
+       role: role,
       password: hashPassword,
-      role: role,
+     
     });
 
     await newUser.save();
