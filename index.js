@@ -59,7 +59,7 @@ forExpress.get("/products", (req, res) => {
 forExpress.use("/api/v1/", Allrouter);
 
 mongoose
-  .connect(process.env.MONGODBURL, {
+  .connect("mongodb+srv://kalimshaikh6964:kalimmongodb1@cluster0.1vgmb47.mongodb.net/newawdiz-33", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

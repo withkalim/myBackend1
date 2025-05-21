@@ -1,3 +1,5 @@
+import User from "../model/user.schema";
+
 export const AddProduct = (req, res) => {
   try {
     const { productname, price, quantity, category, productimage } =
@@ -12,6 +14,19 @@ export const AddProduct = (req, res) => {
       "This are productname, price, quantity, category, productimage"
     );
     console.log(userId, " This is userId");
+
+    const isUserExist = User.findById(userId);
+    console.log(isUserExist, " isUserExist");
+    if (!isUserExist) {
+      res.json({ success: false, message: "User not found" });
+    }
+
+    if (isUserExist.role != "seller") {
+      res.json({
+        success: false,
+        message: "You are not seller to add product",
+      });
+    }
 
     return res.json({ success: true, message: "add Product" });
   } catch (error) {

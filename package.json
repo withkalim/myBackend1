@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon index.js"
   },
   "type": "module",
   "name": "mybackend1",
