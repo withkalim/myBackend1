@@ -1,34 +1,46 @@
-import User from "../model/user.schema";
+import Product from "../model/produdct.schema.js";
+import User from "../model/user.schema.js";
 
-export const AddProduct = (req, res) => {
+export const AddProduct = async (req, res) => {
   try {
-    const { productname, price, quantity, category, productimage } =
+    const { productName, price, quantity, category, productImage } =
       req.body.productData;
     const { userId } = req.body;
     console.log(
-      productname,
+      productName,
       price,
       quantity,
       category,
-      productimage,
-      "This are productname, price, quantity, category, productimage"
+      productImage,
+      "This are productName, price, quantity, category, productimage"
     );
     console.log(userId, " This is userId");
 
-    const isUserExist = User.findById(userId);
+    const isUserExist = await User.findById(userId);
     console.log(isUserExist, " isUserExist");
     if (!isUserExist) {
-      res.json({ success: false, message: "User not found" });
+     return res.json({ success: false, message: "User not found" });
     }
 
     if (isUserExist.role != "seller") {
-      res.json({
+      return res.json({
         success: false,
         message: "You are not seller to add product",
       });
     }
 
-    return res.json({ success: true, message: "add Product" });
+    const newProduct = Product({
+      productName,
+      price,
+      quantity,
+      category,
+      productImage,
+      userId,
+    });
+    await newProduct.save();
+    console.log(" This all are newProduct data ", newProduct);
+
+    return res.json({ success: true, message: "Product successfully created " });
   } catch (error) {
     console.log(error, "someting error in products controller");
     return res.json({ success: false, message: error });
