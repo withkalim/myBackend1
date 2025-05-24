@@ -29,6 +29,13 @@ export const AddProduct = async (req, res) => {
       });
     }
 
+    const isProductExistAlready = await Product.findOne({ productName });
+    if (isProductExistAlready) {
+      return res.json({
+        success: false,
+        message: "Product name is already exist, Plase take another.",
+      });
+    }
     const newProduct = Product({
       productName,
       price,
@@ -50,7 +57,6 @@ export const AddProduct = async (req, res) => {
   }
 };
 
-
 export const AddedProduct = async (req, res) => {
   try {
     const { userId } = req.body;
@@ -66,7 +72,22 @@ export const AddedProduct = async (req, res) => {
       message: "Product successfully fetched",
     });
   } catch (error) {
-       console.log(error, "someting error in Addedproducts fetching");
+    console.log(error, "someting error in Addedproducts fetching");
+    return res.json({ success: false, message: error });
+  }
+};
+
+export const AllUserProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+
+    return res.json({
+      products: products,
+      success: true,
+      message: "All user products fetched",
+    });
+  } catch (error) {
+     console.log(error, "someting error in AllUserProducts fetching");
     return res.json({ success: false, message: error });
   }
 };
